@@ -1,4 +1,6 @@
 #!/usr/bin/python
+# make a character called fringledu and hate the fucker
+# make human npc that is convinced they are a centaur; they wear a horse head mask at ALL times
 
 import tkinter as tk
 import json
@@ -13,18 +15,19 @@ class characterClass:
     hairColor = "null"
     hairStyle = "null"
     eyeColor = "null"
-    strn = 12
-    dex = 12
-    con = 12
-    intel = 12
-    wis = 12
-    cha = 12
-    equipment = 12
-    inventory = 12
-    skills = 12
+    strn = 10
+    dex = 10
+    con = 10
+    intel = 10
+    wis = 10
+    cha = 10
+    equipment = []
+    inventory = []
+    skills = []
 
     def __del__(self):
         print("Destructor called")
+
 
 player = characterClass()
 
@@ -89,9 +92,10 @@ def newGameName():
     #starts by clearing out any save data
     global player
     del player
+    player = characterClass()
     
     mainTextChange("What name would you like your character to have?")
-    userEntry.pack(padx = 5, side = 'right', anchor = 'ne')
+    userEntry.pack(padx = 5, side = 'left', anchor = 'w')
     button1.config(text = 'Enter', command = lambda: inputName())
     button2.config(text = '', command = null)
     button3.config(text = '', command = null)
@@ -126,11 +130,11 @@ def inputRace():
     button3.config(text = 'Catfolk', command = lambda: storeRace('Catfolk'))
     button4.config(text = 'Reptid', command = lambda: storeRace('Reptid'))
     button5.config(text = 'Centaur', command = lambda: storeRace('Centaur')) 
-    buttonQ.config(text = '', command = null)
-    buttonW.config(text = '', command = null)
-    buttonE.config(text = '', command = null)
-    buttonR.config(text = '', command = null)
-    buttonT.config(text = '', command = null)
+    buttonQ.config(text = 'Elf', command = lambda: storeRace('Elf'))
+    buttonW.config(text = 'Dwarf', command = lambda: storeRace('Dwarf'))
+    buttonE.config(text = 'Wolfkin', command = lambda: storeRace('Wolfkin'))
+    buttonR.config(text = 'Wingding', command = lambda: storeRace('Wingding'))
+    buttonT.config(text = 'Arborea', command = lambda: storeRace('Arborea'))
     buttonA.config(text = '', command = null)
     buttonS.config(text = '', command = null)
     buttonD.config(text = '', command = null)
@@ -140,6 +144,45 @@ def inputRace():
 def storeRace(raceName):
     global player
     player.race = raceName
+    if raceName == 'Human':
+        print("YOU BASIC ASS BITCH")
+    elif raceName == 'Minotaur':
+        player.strn += 2
+        player.con += 2
+        player.intel -= 2
+    elif raceName == 'Catfolk':
+        player.dex += 2
+        player.cha += 2
+        player.strn -= 2
+    elif raceName == 'Reptid':
+        player.strn += 2
+        player.dex += 2
+        player.cha -= 2
+    elif raceName == 'Centaur':
+        player.con += 2
+        player.dex += 2
+        player.wis -= 2
+    elif raceName == 'Elf':
+        player.intel += 2
+        player.wis +=2
+        player.strn -= 1
+        player.con -= 1
+    elif raceName == 'Dwarf':
+        player.str += 2
+        player.con += 2
+        player.wis -= 2
+    elif raceName == 'Wolfkin':
+        player.str += 2
+        player.dex += 2
+        player.intel -= 1
+        player.wis -= 1
+    elif raceName == 'Wingding': #Wingdings is plural
+        player.dex += 3
+        player.cha += 1
+        player.intel -= 2
+    elif raceName == 'Arborea': #Arboreas is plural
+        player.con += 4
+        player.dex -= 2
     inputProfession()
 
 def inputProfession():
@@ -195,7 +238,7 @@ def inputHeight(inputFailed = False):
         mainTextChange("This is not a valid number. Must be between 36 and 108, inclusively.")
     else:
         mainTextChange("How tall are you in inches? For reference, 6 ft (~1.8 m) is 72 inches. Heights under 3ft and over 9ft will not be accepted.")
-    userEntry.pack(padx = 5, side = 'right', anchor = 'ne')
+    userEntry.pack(padx = 5, side = 'left', anchor = 'w')
     button1.config(text = 'Enter', command = lambda: storeHeight())
     button2.config(text = '', command = null)
     button3.config(text = '', command = null)
@@ -324,15 +367,23 @@ def storeEyeColor(eyeColor):
 
 def checkPlayerStats():
     global player
-    mainTextChange("Name:       " + player.name + '\n' + \
-                   "Race:       " + player.race + '\n' + \
-                   "Profession: " + player.profession + '\n' + \
-                   "Sex:        " + player.sex + '\n' + \
-                   "Height:     " + str(int(player.height) // 12) + "\'" + str(int(player.height) % 12) + "\"" + '\n' + \
-                   "Weight:     " + player.weight + '\n' + \
-                   "Hair color: " + player.hairColor + '\n' + \
-                   "Hair style: " + player.hairStyle + '\n' + \
-                   "Eye color:  " + player.eyeColor)
+    mainTextChange("Name:         " + player.name + '\n' + \
+                   "Race:         " + player.race + '\n' + \
+                   "Profession:   " + player.profession + '\n' + \
+                   "Sex:          " + player.sex + '\n' + \
+                   "Height:       " + str(int(player.height) // 12) + "\'" + str(int(player.height) % 12) + "\"" + '\n' + \
+                   "Weight:       " + player.weight + '\n' + \
+                   "Hair color:   " + player.hairColor + '\n' + \
+                   "Hair style:   " + player.hairStyle + '\n' + \
+                   "Eye color:    " + player.eyeColor + '\n' + '\n' + \
+                   "Strength:     " + str(player.strn) + '\n' + \
+                   "Dexterity:    " + str(player.dex) + '\n' + \
+                   "Constitution: " + str(player.con) + '\n' + \
+                   "Intelligence: " + str(player.intel) + '\n' + \
+                   "Wisdom:       " + str(player.wis) + '\n' + \
+                   "Charisma:     " + str(player.cha))
+
+                   
     button1.config(text = '', command = null)
     button2.config(text = '', command = null)
     button3.config(text = '', command = null)
